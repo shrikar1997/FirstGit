@@ -25,6 +25,23 @@ console.log(document.images);*/
 //title.style.fontStyle = 'bold';
 
 //GET ITEMS BY CLASS//
+/*
+let item = document.getElementsByClassName('list-group-item');
+item[1].style.fontWeight = 'bold';
+item[2].style.backgroundColor = 'green';
+
+for(let i=0; i<=item.length; i++){
+    item[i].style.fontWeight = 'bold';
+}
+*/
+
+let li = document.getElementsByTagName('li');
+li[1].style.fontWeight = 'bold';
+li[2].style.backgroundColor = 'green';
+
+for(let i=0; i<=item.length; i++){
+    li[i].style.fontWeight = 'bold';
+}
 
 let item = document.getElementsByClassName('list-group-item');
 item[1].style.fontWeight = 'bold';
@@ -33,4 +50,6 @@ item[2].style.backgroundColor = 'green';
 for(let i=0; i<=item.length; i++){
     item[i].style.fontWeight = 'bold';
 }
+
+
 
