@@ -33,7 +33,7 @@ item[2].style.backgroundColor = 'green';
 for(let i=0; i<=item.length; i++){
     item[i].style.fontWeight = 'bold';
 }
-*/
+
 
 let li = document.getElementsByTagName('li');
 li[1].style.fontWeight = 'bold';
@@ -49,7 +49,14 @@ item[2].style.backgroundColor = 'green';
 
 for(let i=0; i<=item.length; i++){
     item[i].style.fontWeight = 'bold';
-}
+}*/
+
+let secondItem = document.querySelector('.list-group-item:nth-child(2)');
+secondItem.style.backgroundColor = 'green';
+
+let thirdItem = document.querySelector('.list-group-item:nth-child(3)');
+thirdItem.style.visibility = "hidden";
+
 
 
 
