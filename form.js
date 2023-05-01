@@ -1,4 +1,5 @@
-function saveToLocalStorage(event){
+function saveToLocalStorage(event)
+{
     event.preventDefault();
 
     const name = event.target.username.value;
@@ -12,11 +13,20 @@ function saveToLocalStorage(event){
     showUserOnScreen(obj);
 }
 
-function showUserOnScreen(obj){
-    const parentElement = document.getElementsByClassName('ex');
-    //const childElement = document.createElement('li');
-    //childElement.textContent = obj.name + '-' + obj.email;
-    //parentElement.appendChild(childElement)
+function showUserOnScreen(obj)
+{
+    const parentElement = document.getElementById('users');
+    const childElement = document.createElement('li');
+    childElement.textContent = obj.name + '-' + obj.email;
+    parentElement.appendChild(childElement)
 
-    parentElement.innerHTML = parentElement.innerHTML + `${obj.name} ${obj.email}`;
+    const deleteButton = document.createElement('input');
+    deleteButton.type = "button";
+    deleteButton.value = 'Delete';
+    deleteButton.onclick = () => {
+        localStorage.removeItem(obj.email)
+        parentElement.removeChild(childElement)
+    }
+    childElement.appendChild(deleteButton);
+    parentElement.appendChild(childElement);
 }
