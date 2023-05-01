@@ -29,4 +29,16 @@ function showUserOnScreen(obj)
     }
     childElement.appendChild(deleteButton);
     parentElement.appendChild(childElement);
+
+    const editButton = document.createElement('input');
+    editButton.type = "button";
+    editButton.value = 'Edit';
+    editButton.onclick = () => {
+        localStorage.removeItem(obj.email)
+        parentElement.removeChild(childElement);
+        usename.value = username.obj;
+        email.value = email.obj;
+    }
+    childElement.appendChild(editButton);
+    parentElement.appendChild(childElement);
 }
