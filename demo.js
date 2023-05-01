@@ -30,8 +30,8 @@ function addItem(e){
   // Append button to li
   li.appendChild(deleteBtn);
 
-  var description = document.getElementsById('description').value;
-  li.appendChild(document.createTextNode(description));
+ var description = document.getElementById('description').value;
+ li.appendChild(document.createTextNode(" " + description));
 
   var editBtn = document.createElement('button');
   // Add classes to edit button
@@ -42,6 +42,8 @@ function addItem(e){
   li.appendChild(editBtn);
   // Append li to list
   itemList.appendChild(li);
+
+  
 }
 
 // Remove item
