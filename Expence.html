@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Expense Tracker</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Expense Tracker</h1>
+    <form>
+      <div class="form-group">
+        <label for="expenseCategory">Category</label>
+        <select class="form-control" id="expenseCategory">
+          <option value="Travelling">Travelling</option>
+          <option value="Meals">Meals</option>
+          <option value="Movie">Movie</option>
+          <option value="Outing">Outing</option>
+          <option value="Etc">Etc...</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="expenseDescription">Expense Description</label>
+        <input type="text" class="form-control" id="expenseDescription" placeholder="Enter expense description">
+      </div>
+      <div class="form-group">
+        <label for="expenseAmount">Expense Amount</label>
+        <input type="number" class="form-control" id="expenseAmount" placeholder="Enter expense amount">
+      </div>
+      <button type="button" class="btn btn-primary" onclick="addExpense()">Add Expense</button>
+    </form>
+
+    <h2>Expenses</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Amount</th>
+          <th>Category</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="expenseTableBody">
+        <!-- Expenses will be dynamically added here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // Add expense
+    function addExpense() {
+      var expenseDescription = document.getElementById('expenseDescription').value;
+      var expenseAmount = document.getElementById('expenseAmount').value;
+      var expenseCategory = document.getElementById('expenseCategory').value;
+
+      if (expenseDescription && expenseAmount && expenseCategory) {
+        var newRow = document.createElement('tr');
+        newRow.innerHTML = '<td>' + expenseDescription + '</td><td>Rs' + expenseAmount + '</td><td>' + expenseCategory + '</td>' +
+          '<td><button class="btn btn-sm btn-primary" onclick="editExpense(this)">Edit</button>' +
+          '<button class="btn btn-sm btn-danger" onclick="deleteExpense(this)">Delete</button></td>';
+        document.getElementById('expenseTableBody').appendChild(newRow);
+
+        document.getElementById('expenseDescription').value = '';
+        document.getElementById('expenseAmount').value = '';
+        document.getElementById('expenseCategory').selectedIndex = 0;
+      }
+    }
+
+    // Edit expense
+    function editExpense(button) {
+      var row = button.parentNode.parentNode;
+      var description = row.cells[0].innerHTML;
+      var amount = row.cells[1].innerHTML.slice(2); // Remove 'Rs' from the amount
+      var category = row.cells[2].innerHTML;
+
+      document.getElementById('expenseDescription').value = description;
+      document.getElementById('expenseAmount').value = amount;
+      document.getElementById('expenseCategory').value = category;
+
+      row.remove(); // Remove the expense row
+    }
+
+    // Delete expense
+    function deleteExpense(button) {
+      var row = button.parentNode.parentNode;
+      row.remove(); // Remove the expense row
+    }
+  </script>
+</body>
