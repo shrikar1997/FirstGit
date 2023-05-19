@@ -36,7 +36,7 @@ function showUserOnScreen(obj)
     editButton.onclick = () => {
         localStorage.removeItem(obj.email)
         parentElement.removeChild(childElement);
-        usename.value = username.obj;
+        username.value = username.obj;
         email.value = email.obj;
     }
     childElement.appendChild(editButton);
