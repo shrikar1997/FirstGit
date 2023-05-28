@@ -31,6 +31,24 @@
             height: 700px;
             display: inline-block;
         }
+
+        body {
+        background-image: url('bgk.jpg');
+        background-size: 100% 100% 100%;
+        background-repeat: no-repeat;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    form {
+        border-radius: 20px;
+        background-color: antiquewhite;
+        color: black;
+        width: 750px;
+        height: 700px;
+    }
         
         
     </style>
@@ -64,16 +82,126 @@
         <br><br>
 
         <button style ="background-color:Orange;" type="submit" class="getacall" size="60"><b>Get A call</b></button>
+
+        <div id="form-data-container"></div>
   
     </form>
-    <script>
-        function ongetacall(event){
-            event.preventDefault();
-            console.log(event.target.name.value);
-            console.log(event.target.email.value);
-            console.log(event.target.dateforcall.value);
-            console.log(event.target.phone.value);
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+
+<script>
+    // Initialize an empty array to store form data
+    let formDataArray = [];
+    
+    function ongetacall(event) {
+        event.preventDefault();
+
+            //console.log(event.target.name.value);
+            //console.log(event.target.email.value);
+            //console.log(event.target.dateforcall.value);
+            //console.log(event.target.phone.value);
+
+        // Retrieve form input values
+        const name = event.target.name.value;
+        const email = event.target.email.value;
+        const dateforcall = event.target.dateforcall.value;
+        const phone = event.target.phone.value;
+
+        // Create an object with the form data
+        const formData = {
+            name,
+            email,
+            dateforcall,
+            phone
+        };
+
+        axios.post("https://crudcrud.com/api/02dc3c5efcd44b5ea6efcf9f5e22f529/appoitment", formData)
+        .then((response) => {
+            displayFormData(response.data)
+            console.log(response)
+        } )
+        .catch((error) => {
+            console.log(error)
+        })
+
+        // Store the form data object in the array
+        formDataArray.push(formData);
+
+        // Store the form data array in local storage
+        //localStorage.setItem('formDataArray', JSON.stringify(formDataArray));
+
+        // Display the form data on the screen
+        //displayFormData();
+
+        // Reset the form inputs
+        event.target.reset();
+    }
+
+    function displayFormData() {
+        // Get the container element to display form data
+        const container = document.getElementById('form-data-container');
+
+        // Clear the container
+        container.innerHTML = '';
+
+        // Iterate through the form data array
+        for (let i = 0; i < formDataArray.length; i++) {
+            const formData = formDataArray[i];
+
+            // Create a new element to display the form data
+            const dataElement = document.createElement('div');
+            dataElement.innerHTML = `
+                <p>Name: ${formData.name}</p>
+                <p>Email: ${formData.email}</p>
+                <p>Date for Call: ${formData.dateforcall}</p>
+                <p>Phone: ${formData.phone}</p>
+                <button onclick="editFormData(${i})">Edit</button>
+                <button onclick="deleteFormData(${i})">Delete</button>
+                <hr>
+            `;
+
+            // Append the data element to the container
+            container.appendChild(dataElement);
         }
-    </script>
+    }
+
+    function editFormData(index) {
+        // Retrieve the form data object from the array at the given index
+        const formData = formDataArray[index];
+
+        // Set the form inputs with the values from the retrieved form data object
+        document.getElementById('name').value = formData.name;
+        document.getElementById('email').value = formData.email;
+        document.getElementById('dateforcall').value = formData.dateforcall;
+        document.getElementById('phone').value = formData.phone;
+
+        // Remove the form data object from the array
+        formDataArray.splice(index, 1);
+
+        // Store the updated form data array in local storage
+        localStorage.setItem('formDataArray', JSON.stringify(formDataArray));
+
+        // Display the updated form data on the screen
+        displayFormData();
+    }
+
+    function deleteFormData(index) {
+        // Remove the form data object from the array at the given index
+        formDataArray.splice(index, 1);
+
+        // Store the updated form data array in local storage
+        localStorage.setItem('formDataArray', JSON.stringify(formDataArray));
+
+        // Display the updated form data on the screen
+        displayFormData();
+    }
+
+    // Retrieve form data array from local storage on page load
+    const storedFormData = localStorage.getItem('formDataArray');
+    if (storedFormData) {
+        formDataArray = JSON.parse(storedFormData);
+        displayFormData();
+    }
+</script>
+
 </body>
 </html>
