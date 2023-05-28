@@ -93,20 +93,32 @@
     let formDataArray = [];
     
     function ongetacall(event) {
-        event.preventDefault();
+    event.preventDefault();
 
-            //console.log(event.target.name.value);
-            //console.log(event.target.email.value);
-            //console.log(event.target.dateforcall.value);
-            //console.log(event.target.phone.value);
+    // Retrieve form input values
+    const name = event.target.name.value;
+    const email = event.target.email.value;
+    const dateforcall = event.target.dateforcall.value;
+    const phone = event.target.phone.value;
 
-        // Retrieve form input values
-        const name = event.target.name.value;
-        const email = event.target.email.value;
-        const dateforcall = event.target.dateforcall.value;
-        const phone = event.target.phone.value;
+    // Check if the form is in edit mode or create mode
+    if (event.target.getAttribute('data-mode') === 'edit') {
+        // Retrieve the index of the form data being edited
+        const index = event.target.getAttribute('data-index');
 
-        // Create an object with the form data
+        // Update the form data object at the given index
+        formDataArray[index] = {
+            name,
+            email,
+            dateforcall,
+            phone
+        };
+
+        // Clear the form mode and index attributes
+        event.target.removeAttribute('data-mode');
+        event.target.removeAttribute('data-index');
+    } else {
+        // Create a new form data object
         const formData = {
             name,
             email,
@@ -114,29 +126,27 @@
             phone
         };
 
-        axios.post("https://crudcrud.com/api/02dc3c5efcd44b5ea6efcf9f5e22f529/appoitment", formData)
-        .then((response) => {
-            displayFormData(response.data)
-            console.log(response)
-
-            
-        } )
-        .catch((error) => {
-            console.log(error)
-        })
-
         // Store the form data object in the array
         formDataArray.push(formData);
-
-        // Store the form data array in local storage
-        //localStorage.setItem('formDataArray', JSON.stringify(formDataArray));
-
-        // Display the form data on the screen
-        //displayFormData();
-
-        // Reset the form inputs
-        event.target.reset();
     }
+
+    axios
+        .post("https://crudcrud.com/api/02dc3c5efcd44b5ea6efcf9f5e22f529/appoitment", formDataArray)
+        .then((response) => {
+            displayFormData(response.data);
+            console.log(response);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+    // Reset the form inputs
+    event.target.reset();
+
+    // Display the form data on the screen
+    displayFormData();
+}
+
 
     window.addEventListener("DOMContentLoaded", () => {
     axios
@@ -189,24 +199,25 @@
     }
 
     function editFormData(index) {
-        // Retrieve the form data object from the array at the given index
-        const formData = formDataArray[index];
+    // Retrieve the form data object from the array at the given index
+    const formData = formDataArray[index];
 
-        // Set the form inputs with the values from the retrieved form data object
-        document.getElementById('name').value = formData.name;
-        document.getElementById('email').value = formData.email;
-        document.getElementById('dateforcall').value = formData.dateforcall;
-        document.getElementById('phone').value = formData.phone;
+    // Set the form inputs with the values from the retrieved form data object
+    document.getElementById('name').value = formData.name;
+    document.getElementById('email').value = formData.email;
+    document.getElementById('dateforcall').value = formData.dateforcall;
+    document.getElementById('phone').value = formData.phone;
 
-        // Remove the form data object from the array
-        formDataArray.splice(index, 1);
+    // Set the form data attributes for edit mode and index
+    const form = document.querySelector('form');
+    form.setAttribute('data-mode', 'edit');
+    form.setAttribute('data-index', index);
 
-        // Store the updated form data array in local storage
-        localStorage.setItem('formDataArray', JSON.stringify(formDataArray));
+    // Display the updated form data on the screen
+    displayFormData();
+}
 
-        // Display the updated form data on the screen
-        displayFormData();
-    }
+
 
     function deleteFormData(index) {
     // Retrieve the form data object from the array at the given index
