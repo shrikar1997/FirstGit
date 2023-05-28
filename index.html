@@ -118,6 +118,8 @@
         .then((response) => {
             displayFormData(response.data)
             console.log(response)
+
+            
         } )
         .catch((error) => {
             console.log(error)
@@ -135,6 +137,20 @@
         // Reset the form inputs
         event.target.reset();
     }
+
+    window.addEventListener("DOMContentLoaded", () =>{
+        axios.get("https://crudcrud.com/api/02dc3c5efcd44b5ea6efcf9f5e22f529/appoitment")
+        .then((response)=>{
+            console.log(response)
+
+            for(var i=0; i<response.data.length; i++){
+                displayFormData(response.data[i])
+            }
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
+    })
 
     function displayFormData() {
         // Get the container element to display form data
